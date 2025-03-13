@@ -84,15 +84,15 @@ private:
 		bitBuffer.WriteBytes( keyValuesBuffer.Base(), keyValuesSize );
 
 		// Overflow check (must account for alignedBufferSize)
-		if ( bitBuffer.IsOverflowed() ) {
+		if ( bitBuffer.IsOverflowed() )
+		{
 			UTIL_LogPrintf( "[CTopMenu] Error: Net buffer overflow\n" );
-			goto cleanup;
+			delete[] tempBuffer;
+			return false;
 		}
 
 		// Send data (only the written part will be sent, but buffer is aligned)
 		bool sendResult = pnetchan->SendData( bitBuffer );
-
-	cleanup:
 		delete[] tempBuffer;
 		return sendResult;
 	}
